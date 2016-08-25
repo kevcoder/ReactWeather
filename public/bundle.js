@@ -24875,7 +24875,7 @@
 						React.createElement(
 							'li',
 							{ className: 'menu-text' },
-							'React Weather App'
+							'React Weather'
 						),
 						React.createElement(
 							'li',
@@ -26439,23 +26439,70 @@
 /* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var React = __webpack_require__(7);
 
 	var About = function About(props) {
 		return React.createElement(
-			'div',
+			"div",
 			null,
 			React.createElement(
-				'h3',
-				null,
-				'About'
+				"h1",
+				{ className: "text=centered" },
+				"About"
 			),
 			React.createElement(
-				'p',
+				"p",
 				null,
-				'Welcome to the Abouts page!'
+				"React Weather is an application built with React.js"
+			),
+			React.createElement(
+				"p",
+				null,
+				"Some of the tools I used include:"
+			),
+			React.createElement(
+				"ol",
+				null,
+				React.createElement(
+					"li",
+					null,
+					React.createElement(
+						"p",
+						null,
+						"React a ",
+						React.createElement(
+							"a",
+							{ href: "http://facebook.github.io/react/" },
+							"Javascript framework."
+						)
+					)
+				),
+				React.createElement(
+					"li",
+					null,
+					React.createElement(
+						"p",
+						null,
+						React.createElement(
+							"a",
+							{ href: "http://openweathermap.org/api" },
+							"Open Weather Map Api"
+						),
+						" in order to search for weather data by city name."
+					)
+				),
+				React.createElement(
+					"li",
+					null,
+					React.createElement(
+						"a",
+						{ href: "http://foundation.zurb.com/" },
+						"Foundation"
+					),
+					" a css framework in order to style the application and make it resposive across multiple devices."
+				)
 			)
 		);
 	};
