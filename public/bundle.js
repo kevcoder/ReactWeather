@@ -106,11 +106,11 @@
 
 	var Main = __webpack_require__(222);
 	var Weather = __webpack_require__(224);
-	var About = __webpack_require__(250);
-	var Examples = __webpack_require__(251);
+	var About = __webpack_require__(251);
+	var Examples = __webpack_require__(252);
 
 	//Load Foundation
-	__webpack_require__(252);
+	__webpack_require__(253);
 	$(document).foundation();
 
 	ReactDOM.render(React.createElement(
@@ -24944,6 +24944,7 @@
 	var WeatherForm = __webpack_require__(225);
 	var WeatherMessage = __webpack_require__(226);
 	var openWeatherMap = __webpack_require__(227);
+	var ErrorModal = __webpack_require__(250);
 
 	var Weather = React.createClass({
 		displayName: 'Weather',
@@ -24957,7 +24958,10 @@
 
 			var that = this;
 
-			this.setState({ isLoading: true });
+			this.setState({
+				isLoading: true,
+				errorMessage: undefined
+			});
 
 			openWeatherMap.getTemp(location).then(function (temp) {
 				that.setState({
@@ -24965,8 +24969,12 @@
 					temp: temp,
 					isLoading: false
 				});
-			}, function (errorMessage) {
-				that.setState({ isLoading: false });
+			}, function (e) {
+				that.setState({
+					isLoading: false,
+					errorMessage: e.message
+
+				});
 				alert(errorMessage);
 			});
 		},
@@ -24975,6 +24983,7 @@
 			var isLoading = _state.isLoading;
 			var temp = _state.temp;
 			var location = _state.location;
+			var errorMessage = _state.errorMessage;
 
 
 			function renderMessage() {
@@ -24989,6 +24998,12 @@
 				}
 			}
 
+			function renderError() {
+				if (typeof errorMessage === 'string') {
+					return React.createElement(ErrorModal, { message: errirMessage });
+				}
+			}
+
 			return React.createElement(
 				'div',
 				null,
@@ -24998,7 +25013,8 @@
 					'Retrieve Weather'
 				),
 				React.createElement(WeatherForm, { onSearch: this.handleSearch }),
-				renderMessage()
+				renderMessage(),
+				renderError()
 			);
 		}
 	});
@@ -26439,6 +26455,64 @@
 /* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var React = __webpack_require__(7);
+
+	var ErrorModal = React.createClass({
+		displayName: 'ErrorModal',
+
+		getDefaultProps: function getDefaultProps() {
+			return {
+				title: 'Error'
+			};
+		},
+		propTypes: {
+			title: React.PropTypes.string,
+			message: React.PropTypes.string.isRequired
+		},
+		componentDidMount: function componentDidMount() {
+			var modal = new Foundation.Reveal($('#error-modal'));
+			modal.open();
+		},
+
+		render: function render() {
+			var _props = this.props;
+			var title = _props.title;
+			var message = _props.message;
+
+			return React.createElement(
+				'div',
+				{ id: 'error-modal', className: 'reveal tiny text-centered', 'data-reveal': '' },
+				React.createElement(
+					'h4',
+					null,
+					title
+				),
+				React.createElement(
+					'p',
+					null,
+					message
+				),
+				React.createElement(
+					'p',
+					null,
+					React.createElement(
+						'button',
+						{ className: 'button hollow', 'data-close': '' },
+						'OKAY'
+					)
+				)
+			);
+		}
+	});
+
+	module.exports = ErrorModal;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	var React = __webpack_require__(7);
@@ -26510,7 +26584,7 @@
 	module.exports = About;
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26564,16 +26638,16 @@
 	module.exports = Examples;
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(253);
+	var content = __webpack_require__(254);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(255)(content, {});
+	var update = __webpack_require__(256)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26590,10 +26664,10 @@
 	}
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(254)();
+	exports = module.exports = __webpack_require__(255)();
 	// imports
 
 
@@ -26604,7 +26678,7 @@
 
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports) {
 
 	/*
@@ -26660,7 +26734,7 @@
 
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
