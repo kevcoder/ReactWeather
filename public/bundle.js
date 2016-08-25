@@ -24860,80 +24860,87 @@
 
 
 	var Nav = React.createClass({
-		displayName: 'Nav',
+	  displayName: 'Nav',
 
-		onSearch: function onSearch(e) {
-			e.preventDefault();
-			alert('not yet wired up');
-		},
-		render: function render() {
-			return React.createElement(
-				'div',
-				{ className: 'top-bar' },
-				React.createElement(
-					'div',
-					{ className: 'top-bar-left' },
-					React.createElement(
-						'ul',
-						{ className: 'menu' },
-						React.createElement(
-							'li',
-							{ className: 'menu-text' },
-							'React Weather'
-						),
-						React.createElement(
-							'li',
-							null,
-							React.createElement(
-								IndexLink,
-								{ to: '/', activeClassName: 'active', activeStyle: { fontWeight: 'bold' } },
-								'Get Weather'
-							)
-						),
-						React.createElement(
-							'li',
-							null,
-							React.createElement(
-								Link,
-								{ to: 'about', activeClassName: 'active', activeStyle: { fontWeight: 'bold' } },
-								'About'
-							)
-						),
-						React.createElement(
-							'li',
-							null,
-							React.createElement(
-								Link,
-								{ to: 'examples', activeClassName: 'active', activeStyle: { fontWeight: 'bold' } },
-								'Examples'
-							)
-						)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'top-bar-right' },
-					React.createElement(
-						'form',
-						{ onSubmit: this.onSearch },
-						React.createElement(
-							'ul',
-							{ className: 'menu' },
-							React.createElement(
-								'li',
-								null,
-								React.createElement('input', { type: 'search', placeholder: 'Retrieve Weather by city' })
-							),
-							React.createElement(
-								'li',
-								null,
-								React.createElement('input', { type: 'submit', className: 'button', value: 'Retrieve Weather' })
-							)
-						)
-					)
-				)
-			);
-		}
+	  onSearch: function onSearch(e) {
+	    e.preventDefault();
+
+	    var location = this.refs.search.value;
+	    var encodedLocation = encodeURIComponent(location);
+
+	    if (location.length > 0) {
+	      this.refs.search.value = '';
+	      window.location.hash = '#/?location=' + encodedLocation;
+	    }
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'top-bar' },
+	      React.createElement(
+	        'div',
+	        { className: 'top-bar-left' },
+	        React.createElement(
+	          'ul',
+	          { className: 'menu' },
+	          React.createElement(
+	            'li',
+	            { className: 'menu-text' },
+	            'React Weather App'
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            React.createElement(
+	              IndexLink,
+	              { to: '/', activeClassName: 'active', activeStyle: { fontWeight: 'bold' } },
+	              'Get Weather'
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            React.createElement(
+	              Link,
+	              { to: '/about', activeClassName: 'active', activeStyle: { fontWeight: 'bold' } },
+	              'About'
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            React.createElement(
+	              Link,
+	              { to: '/examples', activeClassName: 'active', activeStyle: { fontWeight: 'bold' } },
+	              'Examples'
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'top-bar-right' },
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.onSearch },
+	          React.createElement(
+	            'ul',
+	            { className: 'menu' },
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement('input', { type: 'search', placeholder: 'Search weather by city', ref: 'search' })
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement('input', { type: 'submit', className: 'button', value: 'Get Weather' })
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
 	});
 
 	module.exports = Nav;
@@ -24947,80 +24954,95 @@
 	var React = __webpack_require__(7);
 	var WeatherForm = __webpack_require__(225);
 	var WeatherMessage = __webpack_require__(226);
-	var openWeatherMap = __webpack_require__(227);
 	var ErrorModal = __webpack_require__(250);
+	var openWeatherMap = __webpack_require__(227);
 
 	var Weather = React.createClass({
-		displayName: 'Weather',
+	  displayName: 'Weather',
 
-		getInitialState: function getInitialState() {
-			return {
-				isLoading: false
-			};
-		},
-		handleSearch: function handleSearch(location) {
+	  getInitialState: function getInitialState() {
+	    return {
+	      isLoading: false
+	    };
+	  },
+	  handleSearch: function handleSearch(location) {
+	    var that = this;
 
-			var that = this;
+	    this.setState({
+	      isLoading: true,
+	      errorMessage: undefined,
+	      location: undefined,
+	      temp: undefined
+	    });
 
-			this.setState({
-				isLoading: true,
-				errorMessage: undefined
-			});
+	    openWeatherMap.getTemp(location).then(function (temp) {
+	      that.setState({
+	        location: location,
+	        temp: temp,
+	        isLoading: false
+	      });
+	    }, function (e) {
+	      that.setState({
+	        isLoading: false,
+	        errorMessage: e.message
+	      });
+	    });
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var location = this.props.location.query.location;
 
-			openWeatherMap.getTemp(location).then(function (temp) {
-				that.setState({
-					location: location,
-					temp: temp,
-					isLoading: false
-				});
-			}, function (e) {
-				that.setState({
-					isLoading: false,
-					errorMessage: e.message
+	    if (location && location.length > 0) {
+	      this.handleSearch(location);
+	      window.location.hash = '#/';
+	    }
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	    var location = newProps.location.query.location;
 
-				});
-				alert(errorMessage);
-			});
-		},
-		render: function render() {
-			var _state = this.state;
-			var isLoading = _state.isLoading;
-			var temp = _state.temp;
-			var location = _state.location;
-			var errorMessage = _state.errorMessage;
+	    if (location && location.length > 0) {
+	      this.handleSearch(location);
+	      window.location.hash = '#/';
+	    }
+	  },
+	  render: function render() {
+	    var _state = this.state;
+	    var isLoading = _state.isLoading;
+	    var temp = _state.temp;
+	    var location = _state.location;
+	    var errorMessage = _state.errorMessage;
 
 
-			function renderMessage() {
-				if (isLoading) {
-					return React.createElement(
-						'h3',
-						{ className: 'text-center' },
-						'Fetching Weather...'
-					);
-				} else if (temp && location) {
-					return React.createElement(WeatherMessage, { temp: temp, location: location });
-				}
-			}
+	    function renderMessage() {
+	      if (isLoading) {
+	        return React.createElement(
+	          'h3',
+	          { className: 'text-center' },
+	          'Fetching weather...'
+	        );
+	      } else if (temp && location) {
+	        return React.createElement(WeatherMessage, { temp: temp, location: location });
+	      }
+	    }
 
-			function renderError() {
-				if (typeof errorMessage === 'string') {
-					return React.createElement(ErrorModal, { message: errirMessage });
-				}
-			}
+	    function renderError() {
+	      if (typeof errorMessage === 'string') {
+	        return React.createElement(ErrorModal, { message: errorMessage });
+	      }
+	    }
 
-			return React.createElement(
-				'div',
-				null,
-				React.createElement(
-					'h1',
-					{ className: 'text-center page-title' },
-					'Retrieve Weather'
-				),
-				React.createElement(WeatherForm, { onSearch: this.handleSearch }),
-				renderMessage(),
-				renderError()
-			);
-		}
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        { className: 'text-center page-title' },
+	        'Get Weather'
+	      ),
+	      React.createElement(WeatherForm, { onSearch: this.handleSearch }),
+	      renderMessage(),
+	      renderError()
+	    );
+	  }
 	});
 
 	module.exports = Weather;
