@@ -113,6 +113,10 @@
 	__webpack_require__(253);
 	$(document).foundation();
 
+	//App Css
+
+	__webpack_require__(257);
+
 	ReactDOM.render(React.createElement(
 	  Router,
 	  { history: hashHistory },
@@ -24918,7 +24922,7 @@
 							React.createElement(
 								'li',
 								null,
-								React.createElement('input', { type: 'search', placeholder: 'Retrieve Weather' })
+								React.createElement('input', { type: 'search', placeholder: 'Retrieve Weather by city' })
 							),
 							React.createElement(
 								'li',
@@ -24990,7 +24994,7 @@
 				if (isLoading) {
 					return React.createElement(
 						'h3',
-						{ className: 'text-centered' },
+						{ className: 'text-center' },
 						'Fetching Weather...'
 					);
 				} else if (temp && location) {
@@ -25009,7 +25013,7 @@
 				null,
 				React.createElement(
 					'h1',
-					{ className: 'text-centered' },
+					{ className: 'text-center page-title' },
 					'Retrieve Weather'
 				),
 				React.createElement(WeatherForm, { onSearch: this.handleSearch }),
@@ -25049,7 +25053,7 @@
 				React.createElement(
 					'form',
 					{ onSubmit: this.onFormSubmit },
-					React.createElement('input', { type: 'text', ref: 'location' }),
+					React.createElement('input', { type: 'search', ref: 'location', placeholder: 'Search Weather by city' }),
 					React.createElement(
 						'button',
 						{ className: 'button expanded hollow' },
@@ -25076,7 +25080,7 @@
 
 		return React.createElement(
 			"h3",
-			{ className: "text=centered" },
+			{ className: "text-center" },
 			"It is ",
 			temp,
 			" in ",
@@ -26464,7 +26468,7 @@
 
 		getDefaultProps: function getDefaultProps() {
 			return {
-				title: 'Error'
+				title: '@)@)@)@)@'
 			};
 		},
 		propTypes: {
@@ -26523,7 +26527,7 @@
 			null,
 			React.createElement(
 				"h1",
-				{ className: "text=centered" },
+				{ className: "text-center page-title" },
 				"About"
 			),
 			React.createElement(
@@ -26602,7 +26606,7 @@
 			null,
 			React.createElement(
 				'h1',
-				{ className: 'text-center' },
+				{ className: 'text-center page-title' },
 				'Examples '
 			),
 			React.createElement(
@@ -26985,6 +26989,46 @@
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
+
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(258);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(256)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./app.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./app.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(255)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".page-title{\n\tmargin-top: 2.5rem;\n\tmargin-bottom: 2.5rem;\n}\n\ninput[type=search]{\n\tbot-shadow: none;\n}", ""]);
+
+	// exports
 
 
 /***/ }
