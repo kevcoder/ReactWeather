@@ -24828,11 +24828,14 @@
 			null,
 			React.createElement(Nav, null),
 			React.createElement(
-				'h2',
-				null,
-				'Main component'
-			),
-			props.children
+				'div',
+				{ className: 'row' },
+				React.createElement(
+					'div',
+					{ className: 'columns medium-6 large-4 small-centered' },
+					props.children
+				)
+			)
 		);
 	};
 
@@ -24920,7 +24923,7 @@
 							React.createElement(
 								'li',
 								null,
-								React.createElement('input', { type: 'submit', className: 'button', value: 'Retrie Weather' })
+								React.createElement('input', { type: 'submit', className: 'button', value: 'Retrieve Weather' })
 							)
 						)
 					)
@@ -26467,19 +26470,46 @@
 
 	var React = __webpack_require__(7);
 
+	var _require = __webpack_require__(165);
+
+	var Link = _require.Link;
+
+
 	var Examples = function Examples(props) {
 		return React.createElement(
 			'div',
 			null,
 			React.createElement(
-				'h3',
-				null,
+				'h1',
+				{ className: 'text-center' },
 				'Examples '
 			),
 			React.createElement(
 				'p',
 				null,
-				'Welcome to the examples page!'
+				'Here are a few example example locations'
+			),
+			React.createElement(
+				'ol',
+				null,
+				React.createElement(
+					'li',
+					null,
+					React.createElement(
+						Link,
+						{ to: '/?location=Philadelphia' },
+						'Philadelphia'
+					)
+				),
+				React.createElement(
+					'li',
+					null,
+					React.createElement(
+						Link,
+						{ to: '/?location=Dominican Republic' },
+						' Dominican Republic'
+					)
+				)
 			)
 		);
 	};
